@@ -44,7 +44,7 @@ Python 3::
 Usage
 -----
 
-See examples (*send.py*, *receive.py*).
+See `examples`_ (`send.py`_, `receive.py`_).
 
 Open Source
 -----------
@@ -57,3 +57,6 @@ Open Source
 .. _BSD Licence: http://www.linfo.org/bsdlicense.html
 .. _GitHub: https://github.com/milaq/rpi-rf
 .. _GitHub issues: https://github.com/milaq/rpi-rf/issues
+.. _examples: https://github.com/milaq/rpi-rf/blob/master/examples
+.. _send.py: https://github.com/milaq/rpi-rf/blob/master/examples/send.py
+.. _receive.py: https://github.com/milaq/rpi-rf/blob/master/examples/receive.py
