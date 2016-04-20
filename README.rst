@@ -1,0 +1,59 @@
+rpi-rf
+======
+
+Introduction
+------------
+
+Python module for sending and receiving 433MHz LPD/SRD signals with generic low-cost GPIO RF modules on a Raspberry Pi.
+
+Base logic ported from `NinjaBlocks 433Utils`_.
+
+Supported hardware
+------------------
+
+All generic 433MHz capable modules (cost: ~2€) connected via GPIO to a Raspberry Pi.
+
+.. figure:: http://i.imgur.com/vG89UP9.jpg
+   :alt: 433modules
+
+Interoperability
+----------------
+
+Generic RF outlets and most 433MHz switches (cost: ~15€/3pcs).
+
+.. figure:: http://i.imgur.com/WVRxvWe.jpg
+   :alt: rfoutlet
+
+Dependencies
+------------
+
+::
+
+    RPi.GPIO
+
+Installation
+------------
+
+On your Raspberry Pi, install the *rpi_rf* module via pip.
+
+Python 3::
+
+    # apt-get install python3-pip
+    # pip3 install rpi-rf
+
+Usage
+-----
+
+See examples (*send.py*, *receive.py*).
+
+Open Source
+-----------
+
+* The code is licensed under the `BSD Licence`_
+* The project source code is hosted on `GitHub`_
+* Please use `GitHub issues`_ to submit bugs and report issues
+
+.. _NinjaBlocks 433Utils: https://github.com/ninjablocks/433Utils
+.. _BSD Licence: http://www.linfo.org/bsdlicense.html
+.. _GitHub: https://github.com/milaq/rpi-rf
+.. _GitHub issues: https://github.com/milaq/rpi-rf/issues
