@@ -1,5 +1,5 @@
 """
-Sending and receiving 433Mhz signals with cheap GPIO RF Modules on Raspberry Pi.
+Sending and receiving 433Mhz signals with cheap GPIO RF Modules on a Raspberry Pi.
 """
 
 import logging
@@ -107,7 +107,7 @@ class RFDevice:
     def tx_waveform(self, highpulses, lowpulses):
         """Send basic waveform."""
         if not self.tx_enabled:
-            _LOGGER.error("TX is not enabled, not sending")
+            _LOGGER.error("TX is not enabled, not sending data")
             return False
         GPIO.output(self.gpio, GPIO.HIGH)
         time.sleep((highpulses * self.tx_pulselength) / 1000000)
