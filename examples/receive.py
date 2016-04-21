@@ -32,7 +32,7 @@ while True:
     if rfdevice.rx_code_timestamp != timestamp:
         timestamp = rfdevice.rx_code_timestamp
         logging.info(str(rfdevice.rx_code) +
-                     " [pulselength " + str(rfdevice.rx_delay) +
+                     " [pulselength " + str(rfdevice.rx_pulselength) +
                      ", protocol " + str(rfdevice.rx_proto) + "]")
     time.sleep(0.01)
 rfdevice.cleanup()

@@ -37,7 +37,7 @@ class RFDevice:
         self.rx_code_timestamp = None
         self.rx_proto = None
         self.rx_bitlength = None
-        self.rx_delay = None
+        self.rx_pulselength = None
 
         GPIO.setmode(GPIO.BCM)
         _LOGGER.debug("Using GPIO " + str(gpio))
@@ -207,7 +207,7 @@ class RFDevice:
             self.rx_code = code
             self.rx_code_timestamp = timestamp
             self.rx_bitlength = int(change_count / 2)
-            self.rx_delay = delay
+            self.rx_pulselength = delay
             self.rx_proto = proto
             return True
 
