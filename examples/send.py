@@ -15,11 +15,16 @@ parser.add_argument('-g', dest='gpio', type=int, default=17,
                     help="GPIO pin (Default: 17)")
 parser.add_argument('-p', dest='pulselength', type=int, default=350,
                     help="Pulselength (Default: 350)")
+parser.add_argument('-t', dest='protocol', type=int, default=1,
+                    help="Protocol (Default: 1)")
 args = parser.parse_args()
 
 rfdevice = RFDevice(args.gpio)
 rfdevice.enable_tx()
 rfdevice.tx_pulselength = args.pulselength
-logging.info("Sending code " + str(args.code) + " with a pulselength of " + str(args.pulselength))
+rfdevice.tx_proto = args.protocol
+logging.info(str(args.code) +
+             " [pulselength " + str(args.pulselength) +
+             ", protocol " + str(args.protocol) + "]")
 rfdevice.tx_code(args.code)
 rfdevice.cleanup()

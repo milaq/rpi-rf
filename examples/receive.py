@@ -31,6 +31,8 @@ logging.info("Listening for codes on GPIO " + str(args.gpio))
 while True:
     if rfdevice.rx_code_timestamp != timestamp:
         timestamp = rfdevice.rx_code_timestamp
-        logging.info(rfdevice.rx_code)
+        logging.info(str(rfdevice.rx_code) +
+                     " [pulselength " + str(rfdevice.rx_delay) +
+                     ", protocol " + str(rfdevice.rx_proto) + "]")
     time.sleep(0.01)
 rfdevice.cleanup()
