@@ -16,10 +16,11 @@ class RFDevice:
     """Representation of a GPIO RF device."""
 
     # pylint: disable=too-many-instance-attributes,too-many-arguments
-    def __init__(self, gpio, tx_pulselength=350, tx_repeat=10, tx_length=24, rx_tolerance=120):
+    def __init__(self, gpio,
+                 proto=1, tx_pulselength=350, tx_repeat=10, tx_length=24, rx_tolerance=120):
         """Initialize the RF device."""
         self.gpio = gpio
-        self.proto = 1  # unused atm
+        self.proto = proto
         self.tx_enabled = False
         self.tx_pulselength = tx_pulselength
         self.tx_repeat = tx_repeat
@@ -70,15 +71,14 @@ class RFDevice:
         return True
 
     def tx_code(self, code):
-        """Send a decimal code id."""
+        """Send a decimal code."""
         rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
         _LOGGER.debug("TX code: " + str(code))
         return self.tx_bin(rawcode)
 
     def tx_bin(self, rawcode):
-        """Send a binary code id."""
+        """Send a binary code."""
         _LOGGER.debug("TX bin: " + str(rawcode))
-
         for _ in range(0, self.tx_repeat):
             for byte in range(0, self.tx_length):
                 if rawcode[byte] == '0':
@@ -93,16 +93,31 @@ class RFDevice:
         return True
 
     def tx_l0(self):
-        """Send a locic 0."""
-        return self.tx_waveform(1, 3)
+        """Send a '0' bit."""
+        if self.proto == 1:
+            return self.tx_waveform(1, 3)
+        elif self.proto == 2:
+            return self.tx_waveform(1, 2)
+        else:
+            return False
 
     def tx_l1(self):
-        """Send a locic 1."""
-        return self.tx_waveform(3, 1)
+        """Send a '1' bit."""
+        if self.proto == 1:
+            return self.tx_waveform(3, 1)
+        elif self.proto == 2:
+            return self.tx_waveform(2, 1)
+        else:
+            return False
 
     def tx_sync(self):
-        """Send a sync signal."""
-        return self.tx_waveform(1, 31)
+        """Send a sync."""
+        if self.proto == 1:
+            return self.tx_waveform(1, 31)
+        elif self.proto == 2:
+            return self.tx_waveform(1, 10)
+        else:
+            return False
 
     def tx_waveform(self, highpulses, lowpulses):
         """Send basic waveform."""
