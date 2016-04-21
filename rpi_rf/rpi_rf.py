@@ -188,7 +188,7 @@ class RFDevice:
         else:
             return False
         code = 0
-        delay = self._rx_timings[0] / sync
+        delay = int(self._rx_timings[0] / sync)
         delay_tolerance = delay * self.rx_tolerance * 0.01
 
         for i in range(1, change_count, 2):
@@ -206,7 +206,7 @@ class RFDevice:
         if change_count > 6 and code != 0:
             self.rx_code = code
             self.rx_code_timestamp = timestamp
-            self.rx_bitlength = change_count / 2
+            self.rx_bitlength = int(change_count / 2)
             self.rx_delay = delay
             self.rx_proto = proto
             return True
