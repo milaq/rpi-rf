@@ -17,11 +17,11 @@ class RFDevice:
 
     # pylint: disable=too-many-instance-attributes,too-many-arguments
     def __init__(self, gpio,
-                 proto=1, tx_pulselength=350, tx_repeat=10, tx_length=24, rx_tolerance=120):
+                 tx_proto=1, tx_pulselength=350, tx_repeat=10, tx_length=24, rx_tolerance=120):
         """Initialize the RF device."""
         self.gpio = gpio
-        self.proto = proto
         self.tx_enabled = False
+        self.tx_proto = tx_proto
         self.tx_pulselength = tx_pulselength
         self.tx_repeat = tx_repeat
         self.tx_length = tx_length
@@ -35,6 +35,7 @@ class RFDevice:
         # successful RX values
         self.rx_code = None
         self.rx_code_timestamp = None
+        self.rx_proto = None
         self.rx_bitlength = None
         self.rx_delay = None
 
@@ -94,27 +95,27 @@ class RFDevice:
 
     def tx_l0(self):
         """Send a '0' bit."""
-        if self.proto == 1:
+        if self.tx_proto == 1:
             return self.tx_waveform(1, 3)
-        elif self.proto == 2:
+        elif self.tx_proto == 2:
             return self.tx_waveform(1, 2)
         else:
             return False
 
     def tx_l1(self):
         """Send a '1' bit."""
-        if self.proto == 1:
+        if self.tx_proto == 1:
             return self.tx_waveform(3, 1)
-        elif self.proto == 2:
+        elif self.tx_proto == 2:
             return self.tx_waveform(2, 1)
         else:
             return False
 
     def tx_sync(self):
         """Send a sync."""
-        if self.proto == 1:
+        if self.tx_proto == 1:
             return self.tx_waveform(1, 31)
-        elif self.proto == 2:
+        elif self.tx_proto == 2:
             return self.tx_waveform(1, 10)
         else:
             return False
@@ -162,8 +163,10 @@ class RFDevice:
                 self._rx_repeat_count += 1
                 self._rx_change_count -= 1
                 if self._rx_repeat_count == 2:
-                    if self.rx_proto1(self._rx_change_count, timestamp):
-                        _LOGGER.debug("RX code: " + str(self.rx_code))
+                    if self._rx_waveform(1, self._rx_change_count, timestamp):
+                        _LOGGER.debug("RX code [protocol 1]: " + str(self.rx_code))
+                    elif self._rx_waveform(2, self._rx_change_count, timestamp):
+                        _LOGGER.debug("RX code [protocol 2]: " + str(self.rx_code))
                     self._rx_repeat_count = 0
             self._rx_change_count = 0
 
@@ -174,17 +177,25 @@ class RFDevice:
         self._rx_change_count += 1
         self._rx_last_timestamp = timestamp
 
-    def rx_proto1(self, change_count, timestamp):
-        """Detect timings and waveform (Protocol 1)."""
+    def _rx_waveform(self, proto, change_count, timestamp):
+        """Detect waveform and format code."""
+        if proto == 1:
+            sync = 31
+            pulse = 3
+        elif proto == 2:
+            sync = 10
+            pulse = 2
+        else:
+            return False
         code = 0
-        delay = self._rx_timings[0] / 31
+        delay = self._rx_timings[0] / sync
         delay_tolerance = delay * self.rx_tolerance * 0.01
 
         for i in range(1, change_count, 2):
             if (delay + delay_tolerance > self._rx_timings[i] > delay - delay_tolerance and
-                    delay*3 + delay_tolerance > self._rx_timings[i+1] > delay*3 - delay_tolerance):
+                    delay * pulse + delay_tolerance > self._rx_timings[i+1] > delay * pulse - delay_tolerance):
                 code <<= 1
-            elif (delay*3 + delay_tolerance > self._rx_timings[i] > delay*3 - delay_tolerance and
+            elif (delay * pulse + delay_tolerance > self._rx_timings[i] > delay * pulse - delay_tolerance and
                   delay + delay_tolerance > self._rx_timings[i+1] > delay - delay_tolerance):
                 code += 1
                 code <<= 1
@@ -197,7 +208,7 @@ class RFDevice:
             self.rx_code_timestamp = timestamp
             self.rx_bitlength = change_count / 2
             self.rx_delay = delay
-            self.proto = 1
+            self.rx_proto = proto
             return True
 
         return False
