@@ -6,7 +6,7 @@ Introduction
 
 Python module for sending and receiving 433MHz LPD/SRD signals with generic low-cost GPIO RF modules on a Raspberry Pi.
 
-Base logic ported from `NinjaBlocks 433Utils`_.
+Protocol and base logic ported ported from `rc-switch`_.
 
 Supported hardware
 ------------------
@@ -16,13 +16,15 @@ All generic 433MHz capable modules (cost: ~2€) connected via GPIO to a Raspber
 .. figure:: http://i.imgur.com/vG89UP9.jpg
    :alt: 433modules
 
-Interoperability
-----------------
+Compatibility
+-------------
 
 Generic RF outlets and most 433MHz switches (cost: ~15€/3pcs).
 
 .. figure:: http://i.imgur.com/WVRxvWe.jpg
    :alt: rfoutlet
+
+Full list compatible devices and chips see the `rc-switch Wiki`_
 
 Dependencies
 ------------
@@ -53,7 +55,8 @@ Open Source
 * The project source code is hosted on `GitHub`_
 * Please use `GitHub issues`_ to submit bugs and report issues
 
-.. _NinjaBlocks 433Utils: https://github.com/ninjablocks/433Utils
+.. _rc-switch: https://github.com/sui77/rc-switch
+.. _rc-switch Wiki: https://github.com/sui77/rc-switch/wiki
 .. _BSD Licence: http://www.linfo.org/bsdlicense.html
 .. _GitHub: https://github.com/milaq/rpi-rf
 .. _GitHub issues: https://github.com/milaq/rpi-rf/issues
