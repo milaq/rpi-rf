@@ -43,6 +43,47 @@ Python 3::
     # apt-get install python3-pip
     # pip3 install rpi-rf
 
+Wiring diagram (example)
+------------------------
+
+Raspberry Pi 1/2(B+)::
+
+                       RPI GPIO HEADER
+                  ____________
+                 |        ____|__
+                 |       |    |  |
+                 |     01|  . x  |02
+                 |       |  . x__|________       RX
+                 |       |  . x__|______  |   ________
+                 |       |  . .  |      | |  |        |
+       TX        |   ____|__x .  |      | |__|VCC     |
+     _______     |  |  __|__x .  |      |    |        |
+    |       |    |  | |  |  x____|______|____|DATA    |
+    |    GND|____|__| |  |  . .  |      |    |        |
+    |       |    |    |  |  . .  |      |    |DATA    |
+    |    VCC|____|    |  |  . .  |      |    |        |
+    |       |         |  |  . .  |      |____|GND     |
+    |   DATA|_________|  |  . .  |           |________|
+    |_______|            |  . .  |
+                         |  . .  |
+                         |  . .  |
+                         |  . .  |
+                         |  . .  |
+                         |  . .  |
+                         |  . .  |
+                       39|  . .  |40
+                         |_______|
+
+    TX:
+       GND > PIN 09 (GND)
+       VCC > PIN 02 (5V)
+      DATA > PIN 11 (GPIO17)
+
+    RX:
+       VCC > PIN 04 (5V)
+      DATA > PIN 13 (GPIO27)
+       GND > PIN 06 (GND)
+
 Usage
 -----
 
