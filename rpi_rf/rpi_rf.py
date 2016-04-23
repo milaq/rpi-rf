@@ -30,12 +30,15 @@ class RFDevice:
 
     # pylint: disable=too-many-instance-attributes,too-many-arguments
     def __init__(self, gpio,
-                 tx_proto=1, tx_pulselength=350, tx_repeat=10, tx_length=24, rx_tolerance=80):
+                 tx_proto=1, tx_pulselength=None, tx_repeat=10, tx_length=24, rx_tolerance=80):
         """Initialize the RF device."""
         self.gpio = gpio
         self.tx_enabled = False
         self.tx_proto = tx_proto
-        self.tx_pulselength = tx_pulselength
+        if tx_pulselength:
+            self.tx_pulselength = tx_pulselength
+        else:
+            self.tx_pulselength = PROTOCOLS[tx_proto].pulselength
         self.tx_repeat = tx_repeat
         self.tx_length = tx_length
         self.rx_enabled = False
@@ -84,8 +87,21 @@ class RFDevice:
             _LOGGER.debug("TX disabled")
         return True
 
-    def tx_code(self, code):
-        """Send a decimal code."""
+    def tx_code(self, code, tx_proto=None, tx_pulselength=None):
+        """
+        Send a decimal code.
+
+        Optionally set protocol and pulselength.
+        When none given reset to default protocol and pulselength.
+        """
+        if tx_proto:
+            self.tx_proto = tx_proto
+        else:
+            self.tx_proto = 1
+        if tx_pulselength:
+            self.tx_pulselength = tx_pulselength
+        else:
+            self.tx_pulselength = PROTOCOLS[self.tx_proto].pulselength
         rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
         _LOGGER.debug("TX code: " + str(code))
         return self.tx_bin(rawcode)
