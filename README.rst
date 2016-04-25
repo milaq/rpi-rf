@@ -87,7 +87,7 @@ Raspberry Pi 1/2(B+)::
 Usage
 -----
 
-See `examples`_ (`send.py`_, `receive.py`_).
+See `scripts`_ (`rpi-rf_send`_, `rpi-rf_receive`_) which are also shipped as cmdline tools.
 
 Open Source
 -----------
@@ -101,6 +101,6 @@ Open Source
 .. _BSD Licence: http://www.linfo.org/bsdlicense.html
 .. _GitHub: https://github.com/milaq/rpi-rf
 .. _GitHub issues: https://github.com/milaq/rpi-rf/issues
-.. _examples: https://github.com/milaq/rpi-rf/blob/master/examples
-.. _send.py: https://github.com/milaq/rpi-rf/blob/master/examples/send.py
-.. _receive.py: https://github.com/milaq/rpi-rf/blob/master/examples/receive.py
+.. _scripts: https://github.com/milaq/rpi-rf/blob/master/scripts
+.. _rpi-rf_send: https://github.com/milaq/rpi-rf/blob/master/scripts/rpi-rf_send
+.. _rpi-rf_receive: https://github.com/milaq/rpi-rf/blob/master/scripts/rpi-rf_receive
