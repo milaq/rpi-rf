@@ -11,7 +11,7 @@ Protocol and base logic ported ported from `rc-switch`_.
 Supported hardware
 ------------------
 
-All generic 433/315MHz capable modules (cost: ~2€) connected via GPIO to a Raspberry Pi.
+Most generic 433/315MHz capable modules (cost: ~2€) connected via GPIO to a Raspberry Pi.
 
 .. figure:: http://i.imgur.com/vG89UP9.jpg
    :alt: 433modules
@@ -24,7 +24,15 @@ Generic RF outlets and most 433/315MHz switches (cost: ~15€/3pcs).
 .. figure:: http://i.imgur.com/WVRxvWe.jpg
    :alt: rfoutlet
 
-Full list compatible devices and chips see the `rc-switch Wiki`_
+
+Chipsets:
+
+* SC5262 / SC5272
+* HX2262 / HX2272
+* PT2262 / PT2272
+* EV1527 / RT1527 / FP1527 / HS1527
+
+For a full list of compatible devices and chipsets see the `rc-switch Wiki`_
 
 Dependencies
 ------------
