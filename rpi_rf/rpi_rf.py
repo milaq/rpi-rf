@@ -100,7 +100,7 @@ class RFDevice:
             self.tx_proto = 1
         if tx_pulselength:
             self.tx_pulselength = tx_pulselength
-        else:
+        elif not self.tx_pulselength:
             self.tx_pulselength = PROTOCOLS[self.tx_proto].pulselength
         rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
         _LOGGER.debug("TX code: " + str(code))
