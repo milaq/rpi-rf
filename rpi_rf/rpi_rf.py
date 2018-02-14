@@ -102,6 +102,13 @@ class RFDevice:
             self.tx_pulselength = tx_pulselength
         else:
             self.tx_pulselength = PROTOCOLS[self.tx_proto].pulselength
+        
+        """Set tx_length depending on code value"""
+        if (code < 16777216):
+            self.tx_length = 24
+        else:
+            self.tx_length = 32
+        
         rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
         _LOGGER.debug("TX code: " + str(code))
         return self.tx_bin(rawcode)
