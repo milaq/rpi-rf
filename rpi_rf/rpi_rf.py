@@ -87,12 +87,12 @@ class RFDevice:
             _LOGGER.debug("TX disabled")
         return True
 
-    def tx_code(self, code, tx_proto=None, tx_pulselength=None):
+    def tx_code(self, code, tx_proto=None, tx_pulselength=None, tx_length=None):
         """
         Send a decimal code.
 
-        Optionally set protocol and pulselength.
-        When none given reset to default protocol and pulselength.
+        Optionally set protocol, pulselength and code length.
+        When none given reset to default protocol, default pulselength and set code length to 24 bits.
         """
         if tx_proto:
             self.tx_proto = tx_proto
@@ -102,6 +102,13 @@ class RFDevice:
             self.tx_pulselength = tx_pulselength
         elif not self.tx_pulselength:
             self.tx_pulselength = PROTOCOLS[self.tx_proto].pulselength
+        if tx_length:
+            self.tx_length = tx_length
+        elif (code > 16777216):
+            self.tx_length = 32
+        else:
+            self.tx_length = 24
+
         rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
         _LOGGER.debug("TX code: " + str(code))
         return self.tx_bin(rawcode)
