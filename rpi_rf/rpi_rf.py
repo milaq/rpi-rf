@@ -91,8 +91,8 @@ class RFDevice:
         """
         Send a decimal code.
 
-        Optionally set protocol, pulselength and (code) lenght.
-        When none given reset to default protocol and pulselength and set to 24 bit (code) lenght.
+        Optionally set protocol, pulselength and (code) length.
+        When none given reset to default protocol and pulselength and set to 24 bit (code) length.
         """
         if tx_proto:
             self.tx_proto = tx_proto
