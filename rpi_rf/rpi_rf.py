@@ -159,9 +159,9 @@ class RFDevice:
             _LOGGER.error("TX is not enabled, not sending data")
             return False
         GPIO.output(self.gpio, GPIO.HIGH)
-        time.sleep((highpulses * self.tx_pulselength) / 1000000)
+        self._sleep((highpulses * self.tx_pulselength) / 1000000)
         GPIO.output(self.gpio, GPIO.LOW)
-        time.sleep((lowpulses * self.tx_pulselength) / 1000000)
+        self._sleep((lowpulses * self.tx_pulselength) / 1000000)
         return True
 
     def enable_rx(self):
@@ -236,3 +236,9 @@ class RFDevice:
             return True
 
         return False
+           
+    def _sleep(self, delay):      
+        _delay = delay / 100
+        end = time.time() + delay - _delay
+        while time.time() < end:
+            time.sleep(_delay)
