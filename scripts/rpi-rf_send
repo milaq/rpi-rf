@@ -17,10 +17,15 @@ parser.add_argument('-p', dest='pulselength', type=int, default=None,
                     help="Pulselength (Default: 350)")
 parser.add_argument('-t', dest='protocol', type=int, default=None,
                     help="Protocol (Default: 1)")
+parser.add_argument('-l', dest='length', type=int, default=None,
+                    help="Codelength (Default: 24)")
+parser.add_argument('-r', dest='repeat', type=int, default=10,
+                    help="Repeat cycles (Default: 10)")
 args = parser.parse_args()
 
 rfdevice = RFDevice(args.gpio)
 rfdevice.enable_tx()
+rfdevice.tx_repeat = args.repeat
 
 if args.protocol:
     protocol = args.protocol
@@ -30,9 +35,16 @@ if args.pulselength:
     pulselength = args.pulselength
 else:
     pulselength = "default"
+if args.length:
+    length = args.length
+else:
+    length = "default"
+
 logging.info(str(args.code) +
              " [protocol: " + str(protocol) +
-             ", pulselength: " + str(pulselength) + "]")
+             ", pulselength: " + str(pulselength) +
+             ", length: " + str(length) +
+             ", repeat: " + str(rfdevice.tx_repeat) + "]")
 
-rfdevice.tx_code(args.code, args.protocol, args.pulselength)
+rfdevice.tx_code(args.code, args.protocol, args.pulselength, args.length)
 rfdevice.cleanup()

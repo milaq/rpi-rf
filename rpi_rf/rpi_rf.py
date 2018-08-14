@@ -88,12 +88,12 @@ class RFDevice:
             _LOGGER.debug("TX disabled")
         return True
 
-    def tx_code(self, code, tx_proto=None, tx_pulselength=None):
+    def tx_code(self, code, tx_proto=None, tx_pulselength=None, tx_length=None):
         """
         Send a decimal code.
 
-        Optionally set protocol and pulselength.
-        When none given reset to default protocol and pulselength.
+        Optionally set protocol, pulselength and code length.
+        When none given reset to default protocol, default pulselength and set code length to 24 bits.
         """
         if tx_proto:
             self.tx_proto = tx_proto
@@ -101,12 +101,18 @@ class RFDevice:
             self.tx_proto = 1
         if tx_pulselength:
             self.tx_pulselength = tx_pulselength
-        else:
+        elif not self.tx_pulselength:
             self.tx_pulselength = PROTOCOLS[self.tx_proto].pulselength
-        if self.tx_proto == 6:
-            #Adjsut for the nexa codes
+        if tx_length:
+            self.tx_length = tx_length
+        elif self.tx_proto == 6:
             self.tx_length = 32
-            rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
+        elif (code > 16777216):
+            self.tx_length = 32
+        else:
+            self.tx_length = 24
+        rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
+        if self.tx_proto == 6:
             nexacode = ""
             for b in rawcode:
                 if b == '0':
@@ -114,10 +120,7 @@ class RFDevice:
                 if b == '1':
                     nexacode = nexacode + "10"
             rawcode = nexacode
-            #And now adjust for the new code length again
             self.tx_length = 64
-        else:
-            rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
         _LOGGER.debug("TX code: " + str(code))
         return self.tx_bin(rawcode)
 
@@ -170,9 +173,9 @@ class RFDevice:
             _LOGGER.error("TX is not enabled, not sending data")
             return False
         GPIO.output(self.gpio, GPIO.HIGH)
-        time.sleep((highpulses * self.tx_pulselength) / 1000000)
+        self._sleep((highpulses * self.tx_pulselength) / 1000000)
         GPIO.output(self.gpio, GPIO.LOW)
-        time.sleep((lowpulses * self.tx_pulselength) / 1000000)
+        self._sleep((lowpulses * self.tx_pulselength) / 1000000)
         return True
 
     def enable_rx(self):
@@ -247,3 +250,9 @@ class RFDevice:
             return True
 
         return False
+           
+    def _sleep(self, delay):      
+        _delay = delay / 100
+        end = time.time() + delay - _delay
+        while time.time() < end:
+            time.sleep(_delay)
