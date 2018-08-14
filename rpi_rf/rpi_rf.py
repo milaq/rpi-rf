@@ -22,7 +22,8 @@ PROTOCOLS = (None,
              Protocol(650, 1, 10, 1, 2, 2, 1),
              Protocol(100, 30, 71, 4, 11, 9, 6),
              Protocol(380, 1, 6, 1, 3, 3, 1),
-             Protocol(500, 6, 14, 1, 2, 2, 1))
+             Protocol(500, 6, 14, 1, 2, 2, 1),
+             Protocol(200, 1, 10, 1, 5, 1, 1))
 
 
 class RFDevice:
@@ -104,12 +105,22 @@ class RFDevice:
             self.tx_pulselength = PROTOCOLS[self.tx_proto].pulselength
         if tx_length:
             self.tx_length = tx_length
+        elif self.tx_proto == 6:
+            self.tx_length = 32
         elif (code > 16777216):
             self.tx_length = 32
         else:
             self.tx_length = 24
-
         rawcode = format(code, '#0{}b'.format(self.tx_length + 2))[2:]
+        if self.tx_proto == 6:
+            nexacode = ""
+            for b in rawcode:
+                if b == '0':
+                    nexacode = nexacode + "01"
+                if b == '1':
+                    nexacode = nexacode + "10"
+            rawcode = nexacode
+            self.tx_length = 64
         _LOGGER.debug("TX code: " + str(code))
         return self.tx_bin(rawcode)
 
@@ -117,6 +128,9 @@ class RFDevice:
         """Send a binary code."""
         _LOGGER.debug("TX bin: " + str(rawcode))
         for _ in range(0, self.tx_repeat):
+            if self.tx_proto == 6:
+                if not self.tx_sync():
+                    return False
             for byte in range(0, self.tx_length):
                 if rawcode[byte] == '0':
                     if not self.tx_l0():
