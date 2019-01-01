@@ -31,6 +31,8 @@ Chipsets:
 * HX2262 / HX2272
 * PT2262 / PT2272
 * EV1527 / RT1527 / FP1527 / HS1527
+* HS2303-PT                             (Protocol 7)
+* HT12E                                 (Protocol 8)
 
 For a full list of compatible devices and chipsets see the `rc-switch Wiki`_
 
