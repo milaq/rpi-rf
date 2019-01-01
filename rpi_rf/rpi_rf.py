@@ -17,7 +17,7 @@ Protocol = namedtuple('Protocol',
                        'sync_high', 'sync_low',
                        'zero_high', 'zero_low',
                        'one_high', 'one_low',
-					   'inverted'])
+	               'inverted'])
 PROTOCOLS = (None,
              Protocol(350, 1, 31, 1, 3, 3, 1, False),
              Protocol(650, 1, 10, 1, 2, 2, 1, False),
@@ -25,8 +25,8 @@ PROTOCOLS = (None,
              Protocol(380, 1, 6, 1, 3, 3, 1, False),
              Protocol(500, 6, 14, 1, 2, 2, 1, False),
              Protocol(200, 1, 10, 1, 5, 1, 1, False),
-			 Protocol(150, 2, 62, 1, 6, 6, 1, False),
-			 Protocol(270, 36, 1, 1, 2, 2, 1, True))
+             Protocol(150, 2, 62, 1, 6, 6, 1, False),
+             Protocol(270, 36, 1, 1, 2, 2, 1, True))
 
 
 class RFDevice:
