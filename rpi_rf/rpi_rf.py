@@ -120,7 +120,7 @@ class RFDevice:
                 if b == '1':
                     nexacode = nexacode + "10"
             rawcode = nexacode
-            self.tx_length = 64
+            self.tx_length *= 2
         _LOGGER.debug("TX code: " + str(code))
         return self.tx_bin(rawcode)
 
@@ -250,8 +250,8 @@ class RFDevice:
             return True
 
         return False
-           
-    def _sleep(self, delay):      
+
+    def _sleep(self, delay):
         _delay = delay / 100
         end = time.time() + delay - _delay
         while time.time() < end:
