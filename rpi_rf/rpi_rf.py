@@ -56,6 +56,10 @@ class RFDevice:
         self.rx_bitlength = None
         self.rx_pulselength = None
 
+        # set GPIO mode
+        setMode(mode, pin)
+
+    def setMode(self, mode, pin):
         if (mode.upper() == 'BCM'):
             GPIO.setmode(GPIO.BCM)
             _LOGGER.debug("Using GPIO(BCM) pin " + str(pin))
@@ -64,6 +68,7 @@ class RFDevice:
             _LOGGER.debug("Using BOARD pin " + str(pin))
         else:
             _LOGGER.error("Error: using wrong GPIO.mode, only BCM or BOARD allowed!")
+
 
     def cleanup(self):
         """Disable TX and RX and clean up GPIO."""
