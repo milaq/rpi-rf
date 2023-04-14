@@ -57,7 +57,7 @@ class RFDevice:
         self.rx_pulselength = None
 
         # set GPIO mode
-        setMode(mode, pin)
+        self.setMode(mode, pin)
 
     def setMode(self, mode, pin):
         if (mode.upper() == 'BCM'):
